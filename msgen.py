@@ -29,6 +29,12 @@ def generate_random_data():
     </output>
     """
 
+
+def donation_appeal():
+    donation_url = 'https://ko-fi.com/mightylittledev'
+    st.markdown(f'<a href="{donation_url}" target="_blank">Support the development, maintenance and operational costs of this tool with a donation</a>', unsafe_allow_html=True)
+
+
 # Add a title to the webapp
 st.title("Message Enhancement and Analysis Tool")
 
@@ -44,6 +50,8 @@ with col2:
 bypass_llm = False
 if is_ui_debug_mode():
     bypass_llm = st.checkbox("Bypass LLM", value=False)
+
+donation_appeal()
 
 # Create submit button
 if st.button("Enhance Message"):
@@ -141,3 +149,5 @@ if st.button("Enhance Message"):
     
     st.markdown("### Missing Information / Needs more clarity")
     st.markdown(root.find('missing_information').text)
+
+    donation_appeal()
