@@ -5,12 +5,11 @@ import os
 import xml.etree.ElementTree as ET
 import re
 import random
-
+import time
 
 # Function to check if we're in debug mode
 def is_ui_debug_mode():
     return 'uidebug' in st.query_params
-
 
 def generate_random_data():
     """Generate random data for testing purposes."""
@@ -30,7 +29,6 @@ def generate_random_data():
     </output>
     """
 
-
 # Add a title to the webapp
 st.title("Message Enhancement and Analysis Tool")
 
@@ -49,7 +47,17 @@ if is_ui_debug_mode():
 
 # Create submit button
 if st.button("Enhance Message"):
+    # Create a placeholder for the "Analyzing..." label and stopwatch
+    analysis_placeholder = st.empty()
+    
+    start_time = time.time()
+    
     if bypass_llm:
+        # Simulate API call delay
+        for i in range(3):  # Simulate 3 seconds of processing
+            elapsed_time = time.time() - start_time
+            analysis_placeholder.write(f"Analyzing... Time elapsed: {elapsed_time:.2f} seconds")
+            time.sleep(1)
         content = generate_random_data()
     else:
         # Form XML input
@@ -76,13 +84,14 @@ if st.button("Enhance Message"):
         
         client = anthropic.Anthropic(api_key=api_key)
         try:
-            response = client.messages.create(
-                model="claude-3-opus-20240229",
-                max_tokens=3000,
-                temperature=0,
-                system=system_message,
-                messages=[{"role": "user", "content": input_xml}]
-            )
+            with st.spinner("Analyzing..."):
+                response = client.messages.create(
+                    model="claude-3-opus-20240229",
+                    max_tokens=3000,
+                    temperature=0,
+                    system=system_message,
+                    messages=[{"role": "user", "content": input_xml}]
+                )
 
             # Extract the content from the response
             content = response.content[0].text
@@ -92,6 +101,14 @@ if st.button("Enhance Message"):
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
             st.stop()
+
+    # Clear the analysis placeholder
+    analysis_placeholder.empty()
+
+    # Calculate and display the total time taken
+    end_time = time.time()
+    total_time = end_time - start_time
+    st.success(f"Enhancement and analysis completed in {total_time:.2f} seconds")
 
     # Parse the XML response
     try:
@@ -106,10 +123,10 @@ if st.button("Enhance Message"):
     st.markdown("## Enhancements")
     
     st.markdown("### Original Text with emojis added")
-    st.text_area("Original text with emojis added", root.find('no_word_change').text, height=400, label_visibility="hidden")  # Increased height
+    st.text_area("Original text with emojis added", root.find('no_word_change').text, height=400, label_visibility="hidden")
             
     st.markdown("### Enhanced Text with emojis added")
-    st.text_area("Enhanced text with emojis added", root.find('word_change').text, height=400, label_visibility="hidden")  # Increased height
+    st.text_area("Enhanced text with emojis added", root.find('word_change').text, height=400, label_visibility="hidden")
 
     st.markdown("## Improvement Suggestions")
     
