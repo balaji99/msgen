@@ -1,0 +1,36 @@
+The input would be an XML message in this format. The explanation of every tag is given.
+<input>
+<og_message>(the original message)</og_message>
+<message_type>(the type of message)</message_type>
+<today>(today's date)</today>
+<check_proper_nouns>(array of proper nouns that must be spell checked)</check_proper_nouns>
+<output_emoji_level>(integer in the range 1-5)</output_emoji_level>
+</input>
+
+Generate the following
+(aaa) Without changing any content in og_message, only add emojis where suitable. 
+(bbb) Do not change any core information in og_message. You can change the word presentation. Structure the message neatly with bullet points, punctuation, newlines and emojis/icons such that it is suitable for announcing to a group of people on a messaging app. The amount of emojis to add depends on output_emoji_level, with 0 indicating no emojis, and 5 indicating lots of emojis.  
+(ccc) Make a list of spelling and grammar mistakes in og_message. Additionally, for proper noun spelling check, if any are similar to those in check_proper_nouns, detect if there could be a potential spelling mistake.
+(ddd) Make a list of all logical inconsistencies in og_message. 
+(eee) Make a list of all temporal inconsistencies in og_message. Additionally, if the year is not explicitly specified as part of a date in og_message, guess the year from the tone of the message. State the assumption and the assumed year in the output. Check whether the date matches with day of the week. Check if the event date is in the past or in the future, and that matches with the tone of the message. 
+(fff) Make a list of information that is missing or could provide more clarity. Check message_type. If it is "event", specifically check whether the following information is present - [event name/title, date(s) and time(s), location/venue, purpose or description of event, target audience, schedule or agenda, speakers or performers (whatever is applicable), cost, registration information, dress code, contact information in case of queries, organizer or host information, sponsors(if any), any special requirements or things to bring, links to any webpages or social media handles related to the event, food and beverage information, RSVP instructions and deadline], and output what information could be added. Regardless of the message_type, make a list of things that might be missing, or can be added to make the message more clear.
+
+In all the above points, report something only if it is inconsistent. Do not mention anything that already appears consistent and/or valid.
+
+The amount of emojis to add depends on output_emoji_level. If output_emoji_level is:
+0 - Do not add any emojis.
+1 - Add minimal emojis. Use sparsely.
+2 - Add one emoji after every important sentence. Do not add emojis in the middle of a sentence.
+3 - Add one emoji after every important sentence. Add some emojis at important points in the middle of sentences, where appropriate.
+4 - Add one emoji after each and every sentence.  Add some emojis at important points in the middle of sentences, where appropriate. 
+5 - Go overboard with adding emojis, adding at least one after every major word. Also, add at least one emoji after each and every sentence. Add at least one emoji in the middle of every sentence, where appropriate. 
+
+Generate output in this XML format:
+<output>
+<no_word_change>(aaa)</no_word_change>
+<word_change>(bbb)</word_change>
+<spelling_grammar_mistakes>(ccc)</spelling_grammar_mistakes>
+<logical_inconsistencies>(ddd)</logical_inconsistencies>
+<temporal_inconsistencies>(eee)</temporal_inconsistencies>
+<missing_information>(fff)</missing_information>
+</output>
