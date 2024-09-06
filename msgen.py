@@ -7,9 +7,15 @@ import re
 import random
 import time
 
+
 # Function to check if we're in debug mode
 def is_ui_debug_mode():
     return 'uidebug' in st.query_params
+
+
+def is_llm_model_selector_mode():
+    return 'modelselector' in st.query_params
+
 
 def generate_random_data():
     """Generate random data for testing purposes."""
@@ -29,17 +35,19 @@ def generate_random_data():
     </output>
     """
 
-
 def donation_appeal():
     donation_url = 'https://ko-fi.com/mightylittledev'
     st.markdown(f'<a href="{donation_url}" target="_blank">Support the development, maintenance and operational costs of this tool with a donation</a>', unsafe_allow_html=True)
 
 
+
 # Add a title to the webapp
 st.title("Message Enhancement and Analysis Tool")
+st.set_page_config(page_title="Message Enhancement and Analysis Tool", page_icon="✨")
 
 # Create input elements
 og_message = st.text_area("Enter your message here:", height=400)
+
 col1, col2 = st.columns(2)
 with col1:
     output_emoji_level = st.slider("Output Emoji Level", 0, 5, 5)
@@ -52,6 +60,10 @@ if is_ui_debug_mode():
     bypass_llm = st.checkbox("Bypass LLM", value=False)
 
 donation_appeal()
+
+model_name = 'claude-3-5-sonnet-20240620'
+if is_llm_model_selector_mode():
+    model_name = st.selectbox("Model Name", ['claude-3-opus-20240229', 'claude-3-5-sonnet-20240620'])
 
 # Create submit button
 if st.button("Enhance Message"):
@@ -89,12 +101,12 @@ if st.button("Enhance Message"):
         if not api_key:
             st.error("Required environment variables not set.")
             st.stop()
-        
+
         client = anthropic.Anthropic(api_key=api_key)
         try:
             with st.spinner("Analyzing..."):
                 response = client.messages.create(
-                    model="claude-3-opus-20240229",
+                    model=model_name,
                     max_tokens=3000,
                     temperature=0,
                     system=system_message,
@@ -131,10 +143,13 @@ if st.button("Enhance Message"):
     st.markdown("## Enhancements")
     
     st.markdown("### Original Text with emojis added")
-    st.text_area("Original text with emojis added", root.find('no_word_change').text, height=400, label_visibility="hidden")
+    st.text_area("Original text with emojis added", root.find('no_word_change').text, height=400, label_visibility="hidden")   
+    st.divider()
             
     st.markdown("### Enhanced Text with emojis added")
     st.text_area("Enhanced text with emojis added", root.find('word_change').text, height=400, label_visibility="hidden")
+    
+    st.divider()
 
     st.markdown("## Improvement Suggestions")
     
