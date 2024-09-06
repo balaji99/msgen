@@ -40,10 +40,12 @@ def donation_appeal():
     st.markdown(f'<a href="{donation_url}" target="_blank">Support the development, maintenance and operational costs of this tool with a donation</a>', unsafe_allow_html=True)
 
 
+# Should always be the first Streamlit function to be called
+st.set_page_config(page_title="Message Enhancement and Analysis Tool", page_icon="✨")
 
 # Add a title to the webapp
 st.title("Message Enhancement and Analysis Tool")
-st.set_page_config(page_title="Message Enhancement and Analysis Tool", page_icon="✨")
+
 
 # Create input elements
 og_message = st.text_area("Enter your message here:", height=400)
