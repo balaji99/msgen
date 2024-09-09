@@ -94,7 +94,7 @@ if st.button("Enhance Message"):
         try:
             with st.spinner("Analyzing..."):
                 response = client.messages.create(
-                    model="claude-3-opus-20240229",
+                    model="claude-3-5-sonnet-20240620",
                     max_tokens=3000,
                     temperature=0,
                     system=system_message,
