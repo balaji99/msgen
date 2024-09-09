@@ -130,10 +130,10 @@ if st.button("Enhance Message"):
     # Display results
     st.markdown("## Enhancements")
     
-    st.markdown("### Original Text with emojis added")
+    st.markdown("### No words changed, only emojis added")
     st.text_area("Original text with emojis added", root.find('no_word_change').text, height=400, label_visibility="hidden")
             
-    st.markdown("### Enhanced Text with emojis added")
+    st.markdown("### Text enhanced, emojis also added")
     st.text_area("Enhanced text with emojis added", root.find('word_change').text, height=400, label_visibility="hidden")
 
     st.markdown("## Improvement Suggestions")
