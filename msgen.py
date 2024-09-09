@@ -62,7 +62,7 @@ if st.button("Enhance Message"):
     
     if bypass_llm:
         # Simulate API call delay
-        for i in range(3):  # Simulate 3 seconds of processing
+        for i in range(0):
             elapsed_time = time.time() - start_time
             analysis_placeholder.write(f"Analyzing... Time elapsed: {elapsed_time:.2f} seconds")
             time.sleep(1)
