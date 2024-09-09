@@ -49,7 +49,7 @@ with col2:
 # Only show the bypass checkbox if in debug mode
 bypass_llm = False
 if is_ui_debug_mode():
-    bypass_llm = st.checkbox("Bypass LLM", value=False)
+    bypass_llm = st.checkbox("Bypass LLM", value=True)
 
 donation_appeal()
 
